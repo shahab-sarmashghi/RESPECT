@@ -1,0 +1,5 @@
+Input	Output
+Micromonas_pusilla_cov_0.5_err_0.01.fq	mp_fq
+GCF_000151265.2_Micromonas_pusilla_CCMP1545_v2.0_genomic.fna	mp_fa
+Micromonas_pusilla.hist	mp_ha
+Micromonas_pusilla_cov_0.5_err_0.01.hist	mp_hq

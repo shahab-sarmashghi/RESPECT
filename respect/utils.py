@@ -30,13 +30,14 @@ def compute_sequence_stat(input_file, out_name, tmp_dir, sample_size=10000):
     """
 
     # out_name = os.path.basename(input_file).rsplit('.f', 1)[0]
-    file_format = os.path.splitext(input_file)[1]
+    # file_format = os.path.splitext(input_file)[1]
+    file_format = '.f' + os.path.basename(input_file).rsplit('.f', 1)[1]
 
     if sample_size == -1:
         comp_stdout = check_output(["seqtk", "comp", input_file], stderr=STDOUT, universal_newlines=True)
         reads_stat = comp_stdout.split('\n')
     else:
-        subsampled_sequence_file = os.path.join(tmp_dir, out_name + '_subsampled' + file_format)
+        subsampled_sequence_file = os.path.join(tmp_dir, out_name + '_subsampled' + os.path.splitext(file_format)[0])
         seed = 243
         cmd = "seqtk sample -s {0} {1} {2} > {3}".format(seed, input_file, sample_size, subsampled_sequence_file)
         call(cmd, shell=True)

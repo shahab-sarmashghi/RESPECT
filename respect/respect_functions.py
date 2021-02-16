@@ -167,7 +167,8 @@ def valid_file(in_file):
     if not os.path.isfile(in_file):
         logging.warning("{} is not a file; it's skipped".format(in_file))
         return False
-    elif True not in (fnmatch.fnmatch(in_file, '*' + ext) for ext in settings.VALID_FILE_EXTENSIONS):
+    elif True not in (fnmatch.fnmatch(in_file.rsplit('.gz', 1)[0], '*' + ext) for ext in
+                      settings.VALID_FILE_EXTENSIONS):
         logging.warning("{} does not have valid extension; it's skipped".format(in_file))
         return False
     return True

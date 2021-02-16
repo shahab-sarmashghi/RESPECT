@@ -134,8 +134,8 @@ We use an iterative optimization algorithm to find a set of parameters for
 the genome that can explain the observed histogram of k-mers. The size of
 k-mers is `31` by default, but you can use smaller k-mers with `-k` option.
 Please note that the genome looks more repetitive when using smaller
-k-mers, at some point you might also want to lower the minimum permissible
-uniqueness ratio (`r` option).
+k-mers, so at some point you might also want to lower the minimum 
+permissible uniqueness ratio (`-r` option).
 
 The number of iteration of the algorithm is `1000` by default and can be 
 changed using `-N` option. However, be aware that changing that can impact

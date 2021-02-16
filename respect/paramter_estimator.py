@@ -137,7 +137,7 @@ class ParameterEstimator:
 
         else:
             self.input_type = 'sequence'
-            if self.input_file.endswith('a'):
+            if self.input_file.endswith(('a', 'a.gz')):
                 stats = compute_sequence_stat(self.input_file, self.output_name, self.tmp_dir, sample_size=-1)
                 average_read_length = stats[0]
                 maximum_contig_length = stats[1]

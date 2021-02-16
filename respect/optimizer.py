@@ -8,8 +8,15 @@ import os
 import gurobipy
 import logging
 
+try:
+    import importlib.resources as pkg_resources
+except ImportError:
+    # Try backported to PY<37 `importlib_resources`.
+    import importlib_resources as pkg_resources
+
 from respect import settings
 from respect.utils import get_zero_padded_histogram, get_uniqueness_ratio
+from respect import training_data
 
 
 class OptimizerError(Exception):
@@ -199,8 +206,8 @@ class Optimizer:
         """
 
         if self.coverage < settings.ERROR_CORRECTION_COVERAGE_THRESHOLD:
-            training_data_dir = settings.TRAINING_DATA_DIR
-            error_correction = pd.read_csv(os.path.join(training_data_dir, 'sequencing_error_rate_correction.txt'),
+            error_correction = pd.read_csv(pkg_resources.open_text(training_data,
+                                                                   'sequencing_error_rate_correction.txt'),
                                            sep='\t', header=0, index_col=0, float_precision='round_trip')
 
             ratio = round(np.clip(self.uniqueness_ratio, 1e-4, 1.0), 4)
@@ -308,14 +315,13 @@ class Optimizer:
             The poisson coefficients matrix
         """
 
-        training_data_dir = settings.TRAINING_DATA_DIR
         n_splines = settings.SPLINE_NUMBER
 
-        spectral_ratio_lower_bound = pd.Series(pd.read_csv(os.path.join(training_data_dir,
-                                                                        'spectral_ratio_lower_bounds.txt'),
+        spectral_ratio_lower_bound = pd.Series(pd.read_csv(pkg_resources.open_text(training_data,
+                                                                                   'spectral_ratio_lower_bounds.txt'),
                                                            header=None).values.flatten())
-        spectral_ratio_upper_bound = pd.Series(pd.read_csv(os.path.join(training_data_dir,
-                                                                        'spectral_ratio_upper_bounds.txt'),
+        spectral_ratio_upper_bound = pd.Series(pd.read_csv(pkg_resources.open_text(training_data,
+                                                                                   'spectral_ratio_upper_bounds.txt'),
                                                            header=None).values.flatten())
 
         constrained_spectra = self.solve_constrained_lp_using_gurobi(histogram, poisson_matrix,
@@ -323,8 +329,8 @@ class Optimizer:
                                                                      spectral_ratio_upper_bound,
                                                                      os.path.join(self.tmp_dir, 'gurobi.log'))
 
-        splines_list = [pd.read_csv(os.path.join(training_data_dir, 'spline_{}.txt'.format(i + 1)), sep='\t', header=0,
-                                    index_col=0, float_precision='round_trip') for i in range(n_splines)]
+        splines_list = [pd.read_csv(pkg_resources.open_text(training_data, 'spline_{}.txt'.format(i + 1)), sep='\t',
+                                    header=0, index_col=0, float_precision='round_trip') for i in range(n_splines)]
 
         spectral_residuals = [1.0 * constrained_spectra[i] / norm(constrained_spectra[i:], ord=1) for i in range(
             n_splines)]

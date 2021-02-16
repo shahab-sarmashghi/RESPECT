@@ -74,14 +74,21 @@ def kmer_profiler(input_file, sequence_type, out_name, out_dir, kmer_length, n_t
     mercnt = os.path.join(out_dir, out_name + '.jf')
 
     # Whether or not counting canonical k-mers based on the sequence type
+    if input_file.endswith('.gz'):
+        cmd = "gzip -dk {0}".format(input_file)
+        call(cmd, shell=True)
+
     if sequence_type == 'assembly':
         call(["jellyfish", "count", "-m", str(kmer_length), "-s", "100M", "-t", str(n_threads), "-o", mercnt,
-              input_file], stderr=open(os.devnull, 'w'))
+              input_file.rsplit('.gz', 1)[0]], stderr=open(os.devnull, 'w'))
     elif sequence_type == 'genome-skim':
         call(["jellyfish", "count", "-m", str(kmer_length), "-s", "100M", "-t", str(n_threads), "-C", "-o", mercnt,
-              input_file], stderr=open(os.devnull, 'w'))
+              input_file.rsplit('.gz', 1)[0]], stderr=open(os.devnull, 'w'))
     else:
         raise ProfilerError("The sequence type is not set properly")
+
+    if input_file.endswith('.gz'):
+        os.remove(input_file.rsplit('.gz', 1)[0])
 
     histo_stderr = check_output(["jellyfish", "histo", "-h", str(highest_histo_multiplicity), mercnt], stderr=STDOUT,
                                 universal_newlines=True)

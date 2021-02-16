@@ -102,9 +102,6 @@ def main():
                                     help='Maximum number of processing cores to use. '
                                          'Default for this machine: {0}'.format(multiprocessing.cpu_count()))
 
-    # parser_other_group.add_argument('--log', default=os.path.join(os.getcwd(), 'respect.log'), type=str,
-    #                                 metavar='<file>', help='Log file. Default: current_working_directory/respect.log')
-
     parser_other_group.add_argument('--log', type=str, metavar='<file>', help='Log file. Default: printed to the '
                                                                               'standard error if no file is provided')
 

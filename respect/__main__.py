@@ -40,9 +40,9 @@ def main():
 
     parser_io_group.add_argument('-m', '--mapping-file', type=str, metavar='<file>',
                                  help='Tab-separated table where the first column is the name of input files ('
-                                      'including file extensions like a.fq or b.hist) and the second column specifies '
-                                      'the output name. The first line/row should be column names/headers. For the '
-                                      'samples not included in the mapping, input names are used')
+                                      'including file extensions like a.fq.gz or b.hist) and the second column '
+                                      'specifies the output name. The first line/row should be column names/headers. '
+                                      'For the samples not included in the mapping, input names are used')
 
     parser_io_group.add_argument('-I', '--info-file', type=str, metavar='<file>',
                                  help='Tab-separated table where the first column is the names of histogram (.hist) '

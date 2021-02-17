@@ -242,7 +242,7 @@ def run_respect(args):
         try:
             parameter_estimator = ParameterEstimator(input_file, args.kmer_size, output_names[input_file], args.tmp)
             parameter_estimator.preprocess_input_file(histograms_info)
-            parameter_estimator.set_kmer_histogram(args.threads)
+            parameter_estimator.set_kmer_histogram(args.threads, args.decomp)
         except:
             logging.exception("Error occurred when processing {}; it's skipped".format(input_file))
         else:
@@ -275,6 +275,13 @@ def run_respect(args):
                                                                                       spectra_dataframe)
     pool.close()
     pool.join()
+
+    # -o option; making a directory for final results
+    try:
+        os.makedirs(args.output_directory)
+    except OSError as Error:
+        if Error.errno != errno.EEXIST:
+            raise
 
     # Writing the results to the output files
     logging.info("Writing the results to the output files...")

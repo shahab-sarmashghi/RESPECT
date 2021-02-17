@@ -133,4 +133,5 @@ dmypy.json
 tmp/
 estimated-parameters.txt
 estimated-spectra.txt
+test_dir/
 

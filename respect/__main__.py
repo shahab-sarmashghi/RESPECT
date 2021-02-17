@@ -111,6 +111,12 @@ def main():
                                          'created per each sample under this parent directory. Default: '
                                          'current_working_directory/tmp')
 
+    parser_other_group.add_argument('--decomp', type=str, metavar='<string>', choices=['cl-gzip', 'zlib', 'gzip'],
+                                    help='The method to use for gzipped input files decompression. Default: "cl-gzip", '
+                                         'command-line gzip run in a subprocess with -dk option. Other options are '
+                                         'based on using python libraries "zlib" (preferred for larger files) or '
+                                         '"gzip" (entire file is read into memory)')
+
     parser_other_group.add_argument('--version', action='version', version='{} {}'.format(parser.prog, __version__),
                                     help='Print the version number')
 

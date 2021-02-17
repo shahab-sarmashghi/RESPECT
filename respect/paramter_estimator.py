@@ -157,7 +157,7 @@ class ParameterEstimator:
                 self.read_length = average_read_length
 
     @Timer(logger=logging.info)
-    def compute_kmer_histogram(self, n_threads):
+    def compute_kmer_histogram(self, n_threads, decomp_util):
         """Computes the k-mer histogram for sequence inputs.
 
         Sets _histogram and _total_kmers attributes.
@@ -166,10 +166,12 @@ class ParameterEstimator:
         ----------
         n_threads : int
             The number of threads used when profiling sequence inputs
+        decomp_util : str
+            The utility to use for decompressing gzipped inputs
         """
 
         profiler_output = kmer_profiler(self.input_file, self.sequence_type, self.output_name, self.tmp_dir,
-                                        self.kmer_length, n_threads)
+                                        self.kmer_length, n_threads, decomp_util)
         self._histogram = profiler_output[0]
         self._total_kmers = profiler_output[1]
 
@@ -189,7 +191,7 @@ class ParameterEstimator:
             self.genome_length = reader_output[1]
             self.genome_length_ungapped = reader_output[1]
 
-    def set_kmer_histogram(self, n_threads):
+    def set_kmer_histogram(self, n_threads, decomp_util):
         """Sets the histogram by calling respective functions.
 
         Depending on the input type, the histogram is computed (for
@@ -199,6 +201,8 @@ class ParameterEstimator:
         ----------
         n_threads : int
             The number of threads passed to compute_kmer_histogram()
+        decomp_util : str
+            The utility to use for decompressing gzipped input FASTQ/A
 
         Raises
         ------
@@ -209,7 +213,7 @@ class ParameterEstimator:
         if self.input_type == 'histogram':
             self.read_kmer_histogram()
         elif self.input_type == 'sequence':
-            self.compute_kmer_histogram(n_threads)
+            self.compute_kmer_histogram(n_threads, decomp_util)
         else:
             raise EstimatorError("The input type is not set properly")
 

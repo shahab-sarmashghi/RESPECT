@@ -8,17 +8,20 @@ RESPECT also uses [Gurobi][3] to accurately solve optimization problems.
 
 Installation
 ------------ 
-1. You need to have python 2.7 or 3.6 or later installed.
+1. You need to have python 3 (3.6 or later) installed.
 2. Install [Jellyfish][2] and [seqtk][5], and add 
 the path to their binary to the system path (so you can, e.g., 
 run `jellyfish --version` and `seqtk` successfully in the terminal).
 3. Install `gurobipy` package using `pip` as described [here][6] and 
 setup the license (they have free academic license).
-4. Clone the github repository by running (or you can download the repo)
+4. (Optional) have `gzip` 1.6 or later installed to process gzipped inputs.
+Otherwise, if you have .gz inputs, you need to select a python library 
+for decompression using (`--decomp`) option.
+5. Clone the github repository by running (or you can download the repo)
 ```
     git clone https://github.com/shahab-sarmashghi/RESPECT.git
 ```
-5. Change to the RESPECT directory and run
+6. Change to the RESPECT directory and run
 ```
     python setup.py install
 ```
@@ -28,23 +31,27 @@ RESPECT on conda as well.
 
 Using RESPECT
 -------------
-RESPECT accepts uncompressed sequence files (*.fastq/.fq/.fa/.fna/.fasta*) 
+RESPECT accepts uncompressed (*.fastq/.fq/.fa/.fna/.fasta*) or gzipped 
+(*.fastq.gz/.fq.gz/.fa.gz/.fna.gz/.fasta.gz*) sequence files 
 as well as pre-computed k-mer histograms (`jellyfish histo` *.hist* output
-or similarly formatted file) as inputs. 
+or similarly formatted file) as input. If you have gzipped sequence files
+but do not have `gzip` 1.6 or later on your system, use `--decomp` option
+to select `zlib` or `gzip` python libraries for decompression (`zlib` is 
+preferred method for large inputs).
 
 ## Input
 ### FASTQ files
-Files with **.fastq** or **.fq** extension are considered to be a 
-collection of short reads (genome-skims). The k-mer histogram is computed 
-for them, and an iterative optimization is run to estimate their genomic 
-parameters.
+Files with **.fastq** or **.fq** extension (and **.gz** versions) are 
+considered to be a collection of short reads (genome-skims). The k-mer 
+histogram is computed for them, and an iterative optimization is run to 
+estimate their genomic parameters.
 
 ### FASTA files
-Files with **.fa**, **.fna**, or **.fasta** extension are first processed 
-to determine if they are genome-skims or assemblies based on the maximum 
-contig length. Similar to FASTQ files, the k-mer histogram is computed for 
-them. If the input is an assembly, the parameters are directly computed 
-from the input sequence and the k-mer histogram.
+Files with **.fa**, **.fna**, or **.fasta** extension (and **.gz** versions)
+are first processed to determine if they are genome-skims or assemblies 
+based on the maximum contig length. Similar to FASTQ files, the k-mer 
+histogram is computed for them. If the input is an assembly, the parameters 
+are directly computed from the input sequence and the k-mer histogram.
 
 ### Histogram files
 Files with **.hist** extension can also be provided as the input. The 
@@ -70,7 +77,7 @@ Micromonas_pusilla_cov_0.5_err_0.01.hist	100
 ```
 The read length of `Micromonas_pusilla.hist` is `-1`,
 a sentinel value to say that the histogram is from an assembly. If a
-histogram input information is missing from this file, it will be skipped.
+histogram input information is missing from this file, the input is skipped.
 
 ### Input options
 For the convenience of user, the input files can be provided in multiple
@@ -86,7 +93,7 @@ use those names in the output. For example, if you open
 `data/name_mapping.txt`:
 ```
 Input	Output
-Micromonas_pusilla_cov_0.5_err_0.01.fq	mp_fq
+Micromonas_pusilla_cov_0.5_err_0.01.fq.gz	mp_fq
 GCF_000151265.2_Micromonas_pusilla_CCMP1545_v2.0_genomic.fna	mp_fa
 Micromonas_pusilla.hist	mp_ha
 Micromonas_pusilla_cov_0.5_err_0.01.hist	mp_hq
@@ -118,7 +125,11 @@ whole genome duplication.
 `HCRM` stands for high copy repeats per million, and is the estimated 
 average multiplicity of k-mers with the highest 
 multiplicities, normalized by the length of genome. High `HCRM` values 
-can be attributed to the presence of transposable elements.
+can be attributed to the presence of transposable elements. The estimate of
+`HCRM` from genome-skim can be up to 2 times the estimate from the 
+assembly because we do not know which strand (forward/reverse) of DNA
+the reads are coming from, so the counts of a k-mer and its reverse 
+complement are aggregated.
 
 The estimated repeat spectra are written to `estimated_spectra.txt`. The
 column `rX` specifies the estimated number of k-mers with `X` copy in the

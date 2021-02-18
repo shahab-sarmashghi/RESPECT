@@ -7,6 +7,7 @@ import multiprocessing
 
 from respect import settings
 from respect.paramter_estimator import ParameterEstimator
+from respect.utils import safe_output_write
 
 
 def get_parameter_estimator_results(parameter_estimator, n_spectra, parameters_dataframe, spectra_dataframe):
@@ -285,7 +286,10 @@ def run_respect(args):
 
     # Writing the results to the output files
     logging.info("Writing the results to the output files...")
-    parameters_dataframe.to_csv(os.path.join(args.output_directory, 'estimated-parameters.txt'), sep='\t', mode='w',
-                                index=False, na_rep="NA")
-    spectra_dataframe.to_csv(os.path.join(args.output_directory, 'estimated-spectra.txt'), sep='\t', mode='w',
-                             index=False, na_rep="NA")
+    safe_output_write(parameters_dataframe, args.output_directory, 'estimated-parameters.txt')
+    safe_output_write(spectra_dataframe, args.output_directory, 'estimated-spectra.txt')
+
+    # parameters_dataframe.to_csv(os.path.join(args.output_directory, 'estimated-parameters.txt'), sep='\t', mode='w',
+    #                             index=False, na_rep="NA")
+    # spectra_dataframe.to_csv(os.path.join(args.output_directory, 'estimated-spectra.txt'), sep='\t', mode='w',
+    #                          index=False, na_rep="NA")

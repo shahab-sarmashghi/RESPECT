@@ -104,3 +104,58 @@ def get_uniqueness_ratio(repeat_spectra, genome_length):
     """
 
     return min(1.0, 1.0 * repeat_spectra[0] / genome_length)
+
+
+def increment_filename(filename, marker="_"):
+    """Appends a counter to a filename, or increments an existing counter."""
+
+    basename, file_ext = os.path.splitext(filename)
+
+    # If there isn't a counter already, then append one
+    if marker not in basename:
+        components = [basename, 1, file_ext]
+
+    # If it looks like there might be a counter, then try to coerce it to an
+    # integer and increment it. If that fails, then just append a new counter.
+    else:
+        base, counter = basename.rsplit(marker, 1)
+        try:
+            new_counter = int(counter) + 1
+            components = [base, new_counter, file_ext]
+        except ValueError:
+            components = [base, 1, file_ext]
+
+    # Drop in the marker before the counter
+    components.insert(1, marker)
+
+    new_filename = "%s%s%d%s" % tuple(components)
+    return new_filename
+
+
+def safe_output_write(dataframe, output_dir, output_name):
+    """Writes dataframe to a file without overwriting existing files.
+
+    If a file already exists at output_dir/output_name, it will not be
+    overwritten, and a number is appended to output_name.
+
+    Parameters
+    ----------
+    dataframe : pandas.DataFrame
+        The estimated repeat spectra
+    output_dir : str
+        The output directory
+    output_name : str
+        The (prefix) of output file name
+    """
+
+    incremented_output_name = output_name
+
+    # Keep trying to append to the name until it is unique
+    while True:
+        output_file = os.path.join(output_dir, incremented_output_name)
+        if not os.path.exists(output_file):
+            dataframe.to_csv(output_file, sep='\t', mode='w', index=False, na_rep="NA")
+            return
+        incremented_output_name = increment_filename(incremented_output_name)
+
+

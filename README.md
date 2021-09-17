@@ -126,7 +126,7 @@ and `estimated_spectra.txt` in the current working directory (you can use
 `-o` option to modify the output directory). The estimated parameters file
 headings are:
 ```
-sample	input_type	sequence_type	coverage	genome_length	uniqueness_ratio	HCRM	sequencing_error_rate
+sample	input_type	sequence_type	coverage	genome_length	uniqueness_ratio	HCRM	sequencing_error_rate   average_read_length
 ``` 
 The `input_type` is either `sequence` (for FASTQ/A files) or `histogram` 
 (for .hist files). The sequence type determines whether the input is from
@@ -147,6 +147,9 @@ Please note that the estimate of `HCRM` from genome-skim can be up to 2 times
 the estimate from the assembly because we do not know which strand (forward/reverse) 
 of DNA the reads are coming from, so the counts of a k-mer and its reverse 
 complement are aggregated.
+
+The `average_read_length` for assemblies is set to `-1` to be consistent with the
+convention used in histogram information file (`data\hist_info.txt`).
 
 The estimated repeat spectra are written to `estimated_spectra.txt`. The
 column `rX` specifies the estimated number of k-mers with `X` copy in the

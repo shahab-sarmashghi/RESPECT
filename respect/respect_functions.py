@@ -40,7 +40,8 @@ def get_parameter_estimator_results(parameter_estimator, n_spectra, parameters_d
          'genome_length': parameter_estimator.genome_length,
          'uniqueness_ratio': format(r1l, ".2f") if r1l else r1l,
          'HCRM': format(hcrm, ".2f") if hcrm else hcrm,
-         'sequencing_error_rate': format(e, ".4f") if e else e}, ignore_index=True)
+         'sequencing_error_rate': format(e, ".4f") if e else e,
+         'average_read_length': parameter_estimator.read_length}, ignore_index=True)
 
     # Making the last bin collect all k-mers with n_spectra and higher multiplicity
     compact_repeat_spectra = [int(parameter_estimator.repeat_spectra[i]) for i in range(n_spectra - 1)]
@@ -252,7 +253,7 @@ def run_respect(args):
     # Initiating output data-frames
     parameters_dataframe = pandas.DataFrame(columns=['sample', 'input_type', 'sequence_type', 'coverage',
                                                      'genome_length', 'uniqueness_ratio', 'HCRM',
-                                                     'sequencing_error_rate'])
+                                                     'sequencing_error_rate', 'average_read_length'])
     spectra_dataframe = pandas.DataFrame(columns=['sample'] +
                                                  ['r{}'.format(j) for j in range(1, args.spectra_output_size + 1)])
 

@@ -133,7 +133,7 @@ class ParameterEstimator:
                 self.sequence_type = 'assembly'
             else:
                 self.sequence_type = 'genome-skim'
-                self.read_length = read_length
+            self.read_length = read_length
 
         else:
             self.input_type = 'sequence'
@@ -147,6 +147,7 @@ class ParameterEstimator:
                     self.sequence_type = 'assembly'
                     self.genome_length = total_sequence_length
                     self.genome_length_ungapped = total_sequence_length_ungapped
+                    self.read_length = -1
                 else:
                     self.sequence_type = 'genome-skim'
                     self.read_length = average_read_length
@@ -248,7 +249,8 @@ class ParameterEstimator:
     def estimate_genome_skim_parameters(self, spectra_number, error_norm, iterations_number, min_r1l, temperature):
         """Estimates the genome-skim parameters.
 
-        D
+        Runs the optimization and sets the estimated parameters of
+        the input genome-skim.
 
         Parameters
         ----------

@@ -12,27 +12,36 @@ internally to efficiently compute k-mer histograms of input sequence files.
 RESPECT also uses [Gurobi][3] to accurately solve optimization problems.
 
 Installation
------------- 
-1. You need to have python 3 (3.6 or later) installed.
-2. Install [Jellyfish][2] and [seqtk][5], and add 
-the path to their binary to the system path (so you can, e.g., 
-run `jellyfish --version` and `seqtk` successfully in the terminal).
-3. Install `gurobipy` package using `pip` as described [here][6] and 
-setup the license (they have free academic license).
+------------
+You need to have python 3 (3.6 or later) installed. It is recommended to create
+a new conda environment and use conda to install the following requirements 
+(alternatively, you can install each tool from its source and add them to the system 
+path).
+1. Install [Miniconda][4] (you can skip this if you already have either of 
+Miniconda or Anaconda installed).
+2. Add bioconda and Gurobi channels by running the following commands in the terminal:
+    ```
+        conda config --add channels defaults
+        conda config --add channels bioconda
+        conda config --add channels conda-forge
+        conda config --add channels https://conda.anaconda.org/gurobi
+   ```
+2. Install [Jellyfish][2], [seqtk][5], and [gurobi][6] by running the following command
+    ```
+        conda install jellyfish seqtk gurobi
+   ```
+3. Set up the [license][7] to use Gurobi for academic purposes.
 4. (Optional) have `gzip` 1.6 or later installed to process gzipped inputs.
 Otherwise, if you have .gz inputs, you need to select a python library 
 for decompression using (`--decomp`) option.
 5. Clone the github repository by running (or you can download the repo)
-```
-    git clone https://github.com/shahab-sarmashghi/RESPECT.git
-```
+    ```
+        git clone https://github.com/shahab-sarmashghi/RESPECT.git
+    ```
 6. Change to the RESPECT directory and run
-```
-    python setup.py install
-```
-Please not note that all of the above requirements can be found on conda
-and you can easily install them and go to step 4. Soon, we will have 
-RESPECT on conda as well.
+    ```
+        python setup.py install
+    ```
 
 Using RESPECT
 -------------
@@ -127,13 +136,14 @@ to the total length of genome, and is a measure of repetitiveness of the
 genome sequence. Low `uniqueness_ratio` values (<0.8) can be a signature of recent
 whole genome duplication. 
 
-`HCRM` stands for high copy repeats per million, and is the estimated 
-average multiplicity of k-mers with the highest 
-multiplicities, normalized by the length of genome. High `HCRM` values 
-can be attributed to the presence of transposable elements. The estimate of
-`HCRM` from genome-skim can be up to 2 times the estimate from the 
-assembly because we do not know which strand (forward/reverse) of DNA
-the reads are coming from, so the counts of a k-mer and its reverse 
+`HCRM` stands for high copy repeats per million, and is the average
+count (per million base-pairs) of the 10 most highly
+repetitive k-mers. For assemblies we compute that directly from the k-mer
+histogram, and for genome-skims it is computed using the estimated coverage.
+High `HCRM` values can be attributed to the presence of transposable elements. 
+Please note that the estimate of `HCRM` from genome-skim can be up to 2 times 
+the estimate from the assembly because we do not know which strand (forward/reverse) 
+of DNA the reads are coming from, so the counts of a k-mer and its reverse 
 complement are aggregated.
 
 The estimated repeat spectra are written to `estimated_spectra.txt`. The
@@ -183,4 +193,5 @@ available options.
 [3]: https://www.gurobi.com
 [4]: https://conda.io/miniconda.html
 [5]: https://github.com/lh3/seqtk
-[6]: https://www.gurobi.com/documentation/9.1/quickstart_mac/cs_using_pip_to_install_gr.html
+[6]: https://www.gurobi.com/documentation/9.1/quickstart_mac/cs_anaconda_and_grb_conda_.html
+[7]: https://www.gurobi.com/documentation/9.1/quickstart_mac/obtaining_a_grb_license.html

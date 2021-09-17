@@ -13,23 +13,25 @@ RESPECT also uses [Gurobi][3] to accurately solve optimization problems.
 
 Installation
 ------------
-You need to have python 3 (3.6 or later) installed. It is recommended to create
+You need to have python 3.6, 3.7, or 3.8 installed. It is recommended to create
 a new conda environment and use conda to install the following requirements 
-(alternatively, you can install each tool from its source and add them to the system 
-path).
+(alternatively, you can install each tool from its source and add them to the 
+system path).
 1. Install [Miniconda][4] (you can skip this if you already have either of 
 Miniconda or Anaconda installed).
-2. Add bioconda and Gurobi channels by running the following commands in the terminal:
+2. Add bioconda and Gurobi channels by running the following commands in 
+the terminal (order matters):
     ```
         conda config --add channels defaults
-        conda config --add channels bioconda
         conda config --add channels conda-forge
+        conda config --add channels bioconda
         conda config --add channels https://conda.anaconda.org/gurobi
-   ```
-2. Install [Jellyfish][2], [seqtk][5], and [gurobi][6] by running the following command
     ```
-        conda install jellyfish seqtk gurobi
-   ```
+2. Install [Jellyfish][2], [seqtk][5], and [gurobi][6] by running the following 
+command
+    ```
+        conda install jellyfish seqtk gurobi 
+    ```
 3. Set up the [license][7] to use Gurobi for academic purposes.
 4. (Optional) have `gzip` 1.6 or later installed to process gzipped inputs.
 Otherwise, if you have .gz inputs, you need to select a python library 

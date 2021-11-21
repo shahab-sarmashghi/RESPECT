@@ -168,7 +168,7 @@ Please note that the genome looks more repetitive when using smaller
 k-mers, so at some point you might also want to lower the minimum 
 permissible uniqueness ratio (`-r` option).
 
-The number of iteration of the algorithm is `1000` by default and can be 
+The number of iterations of the algorithm is `1000` by default and can be 
 changed using `-N` option. However, be aware that changing that can impact
 the speed and convergence of algorithm, so it should be done advisedly.
 

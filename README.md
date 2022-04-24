@@ -120,7 +120,7 @@ to name the samples in the results. If an input file is missing from this
 file, the input name is used for the outputs as well.
 
 
-## Ouput
+## Output
 The final estimates of parameters are written to `estimated_parameters.txt`
 and `estimated_spectra.txt` in the current working directory (you can use 
 `-o` option to modify the output directory). The estimated parameters file

@@ -190,6 +190,32 @@ the purpose of this example) and `--debug` is used to instruct RESPECT to
 print out stack traces of any errors happened. The output files will be
 written to the current working directory. Run `RESPECT --help` to see all 
 available options.
+
+## Note
+RESPECT algorithm is designed and optimized to work with low coverage data.
+In the [paper][1], we have provided the benchmarking results for 0.5X to 4X
+sequencing depth range. Although theoretically it's easier to estimate the
+genomic paramteres from higher coverage data, RESPECT algoirthm is not
+currently optimized for that. We will try to address that in the future,
+however, we have seen interest in using current version of RESPECT even on 
+high coverage data. In that case, we suggest the user should first downsample
+the input genome skim to below 5X range. The relationship between coverage,
+read length, and genome length is:
+
+coverage = number_of_reads * average_read_length / genome_length
+
+so, for example, to get ~4X coverage, the input should have this many reads:
+
+4 * genome_length / average_read_length
+
+If you have some estimate of the genome length (from closely related species),
+you can use the above formula to find if downsampling is needed. And if you have no
+idea about how long the genome is, you can run RESPECT once, and see what is
+the estimate of coverage. If it's large, you can downsample based on the first 
+estimate and run RESPECT again. If the genome length estimate is stable (close
+to the first estimate) you can stop. Otherwise, you need to repeat this process until 
+the target coverage range is acheived.
+
  
 [1]: https://doi.org/10.1371/journal.pcbi.1009449
 [2]: http://www.genome.umd.edu/jellyfish.html

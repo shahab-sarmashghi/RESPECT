@@ -196,11 +196,11 @@ RESPECT algorithm is designed and optimized to work with low coverage data.
 In the [paper][1], we have provided the benchmarking results for 0.5X to 4X
 sequencing depth range. Although theoretically it's easier to estimate the
 genomic paramteres from higher coverage data, RESPECT algoirthm is not
-numerically optimized for that. We will try to address that in the future,
-however, we have seen interest in using current version of RESPECT even on 
-high coverage data. In that case, we suggest the user should first downsample
-the input genome skim to below 5X range. The relationship between coverage,
-read length, and genome length is:
+numerically optimized for that. While we will try to address that more 
+systematically in the future, we have seen interest in using the current 
+version of RESPECT even on high coverage data. In that case, we suggest 
+the user should first downsample the input genome skim to below 5X range. 
+The relationship between coverage, read length, and genome length is:
 
 coverage = number_of_reads * average_read_length / genome_length
 

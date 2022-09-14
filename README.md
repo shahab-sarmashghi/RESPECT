@@ -211,8 +211,8 @@ so, for example, to get ~4X coverage, the input should have this many reads:
 If you have some estimate of the genome length (from closely related species),
 you can use the above formula to find if downsampling is needed. And if you have no
 idea about how long the genome is, you can run RESPECT once, and see what is
-the estimate of coverage. If it's large, you can downsample based on the first 
-estimate and run RESPECT again. If the genome length estimate is stable (close
+the estimate of coverage. If it's high, you can downsample based on the first 
+estimate and run RESPECT again. If genome length and coverage estimates are stable (close
 to the first estimate) you can stop. Otherwise, you might need to repeat this process 
 until the target coverage range is acheived.
 

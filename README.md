@@ -3,11 +3,14 @@ RESPECT is a tool for estimating the repeat spectra and parameters such as
 genome length and coverage from low-coverage sequencing reads (genome-skims). 
 The manuscript where we describe the algorithm and test 
 RESPECT on simulated short reads and SRA data:
- - [Sarmashghi S, Balaban M, Rachtman E, Touri B, Mirarab S, Bafna V (2021) Estimating repeat spectra and genome length from low-coverage genome skims with RESPECT. PLoS Comput Biol 17(11): e1009449. https://doi.org/10.1371/journal.pcbi.1009449][1]
+ - [Sarmashghi S, Balaban M, Rachtman E, Touri B, Mirarab S, Bafna V (2021) Estimating repeat 
+ spectra and genome length from low-coverage genome skims with RESPECT. PLoS Comput Biol 17(11): 
+ e1009449. https://doi.org/10.1371/journal.pcbi.1009449][1]
 
 RESPECT is a command-line tool implemented in python. It runs [Jellyfish][2] 
 internally to efficiently compute k-mer histograms of input sequence files.
-RESPECT also uses [Gurobi][3] to accurately solve optimization problems.
+RESPECT also uses [Gurobi][3] to accurately solve optimization problems. You can check out 
+these awesome [tutorials][8] by Siavash Mirarab to learn more about tools we have developed for genome skimming.
 
 Installation
 ------------
@@ -224,3 +227,4 @@ until the target coverage range is acheived.
 [5]: https://github.com/lh3/seqtk
 [6]: https://www.gurobi.com/documentation/9.1/quickstart_mac/cs_anaconda_and_grb_conda_.html
 [7]: https://www.gurobi.com/documentation/9.1/quickstart_mac/obtaining_a_grb_license.html
+[8]: https://github.com/smirarab/tutorials

@@ -28,13 +28,14 @@ the terminal (order matters):
         conda config --add channels bioconda
         conda config --add channels https://conda.anaconda.org/gurobi
     ```
-2. Install [Jellyfish][2], [seqtk][5], and [gurobi][6] by running the following 
+3. Install [Jellyfish][2], [seqtk][5], and [gurobi][6] by running the following 
 command
     ```
         conda install jellyfish seqtk gurobi 
     ```
-3. Set up the [license][7] to use Gurobi for academic purposes.
-4. (Optional) have `gzip` 1.6 or later installed to process gzipped inputs.
+4. Set up the [license][7] to use Gurobi for academic purposes. See [this](#note-on-gurobi-licenses)
+section for further instructions on how to install and manage licenses.
+5. (Optional) have `gzip` 1.6 or later installed to process gzipped inputs.
 Otherwise, if you have .gz inputs, you need to select a python library 
 for decompression using (`--decomp`) option.
 5. Clone the github repository by running (or you can download the repo)
@@ -194,7 +195,7 @@ print out stack traces of any errors happened. The output files will be
 written to the current working directory. Run `RESPECT --help` to see all 
 available options.
 
-## Note
+## Note on the best range of coverage to run RESPECT
 RESPECT algorithm is designed and optimized to work with low coverage data.
 In the [paper][1], we have provided the benchmarking results for 0.5X to 4X
 sequencing depth range. Although theoretically it's easier to estimate the
@@ -219,6 +220,33 @@ estimate and run RESPECT again. If genome length and coverage estimates are stab
 to the first estimate) you can stop. Otherwise, you might need to repeat this process 
 until the target coverage range is acheived.
 
+## Note on Gurobi licenses
+If you want to run Gurobi on a single machine, select *free academic license* when
+you visit the link in step 4. It will direct you to create an account and 
+request a free academic license. At the end, it generates a code for you
+to run with `grbgetkey` command (ex. `grbgetkey 253e22f3-...`) that creates
+a license file and writes it to a default location. When Gurobi is run, it
+looks for the license file in the defualt locations. You can use the environment
+variable `GRB_LICENSE_FILE` to specify a license file saved in a non-defualt
+location (or when you are managing multiple licenses, see below).
+
+If you want to run Gurobi on a cluster, you can either install a separate license
+on each node using the above method, or use a *floating* license. When using
+separate licenses on a shared file system, you can use `GRB_LICENSE_FILE` 
+environment variable to set the license file for each node properly before running 
+RESPECT on that node. For example, let's say you have 2 nodes. You obtain two separate
+license files (ex, gurobi_1.lic, gurobi_2.lic), and choose the right license file 
+by running `export GRB_LICENSE_FILE=path_to_license_file` before running REPSECT. However,
+this approach isn't useful for HPCs that use job scheduling systems to manage their
+workload across many nodes. In such cases, you can use a floating license which is
+still free for academic purposes, however, you need to ask your system admin to 
+submit a request to Gurobi help center as directed [here][9]. After a floating license 
+is obtained and installed on the head node (see [here][10]), a token sever should be 
+started on the head node using `grb_ts` command . Lastly, each worker node neads a 
+client license which is a simple text file specifying the address of head node on the 
+local network (see [here][11]). Now, using a single Gurobi floating license on the 
+head node which runs a token server, Gurobi can be run on all other worker nodes.
+ 
  
 [1]: https://doi.org/10.1371/journal.pcbi.1009449
 [2]: http://www.genome.umd.edu/jellyfish.html
@@ -228,3 +256,6 @@ until the target coverage range is acheived.
 [6]: https://www.gurobi.com/documentation/9.1/quickstart_mac/cs_anaconda_and_grb_conda_.html
 [7]: https://www.gurobi.com/documentation/9.1/quickstart_mac/obtaining_a_grb_license.html
 [8]: https://github.com/smirarab/tutorials
+[9]: https://support.gurobi.com/hc/en-us/articles/360013195412
+[10]: https://www.gurobi.com/documentation/10.0/quickstart_linux/retrieving_a_floating_lice.html
+[11]: https://www.gurobi.com/documentation/10.0/quickstart_linux/creating_a_token_server_cl.html

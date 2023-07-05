@@ -8,7 +8,7 @@ if sys.version_info[:2] <= (2, 7):
 elif sys.version_info[:2] <= (3, 6):
     install_requires = ["numpy==1.14.6", "scipy==1.1.0", "pandas==0.22.0", "gurobipy>=7.0.2", "importlib_resources"]
 elif sys.version_info[:2] >= (3, 7):
-    install_requires = ["numpy>=1.16.5", "scipy>=1.1.0", "pandas>=1.0.0", "gurobipy>=7.0.2"]
+    install_requires = ["numpy==1.16.5", "scipy==1.1.0", "pandas==1.0.0", "gurobipy>=7.0.2"]
 
 setup(name='respect',
       python_requires='>=3.6',

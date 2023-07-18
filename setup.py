@@ -3,12 +3,10 @@ import sys
 
 from respect import __version__
 
-if sys.version_info[:2] <= (2, 7):
-    sys.exit('Sorry, Python 2 is not supported anymore')
-elif sys.version_info[:2] <= (3, 6):
-    install_requires = ["numpy==1.14.6", "scipy==1.1.0", "pandas==0.22.0", "gurobipy>=7.0.2", "importlib_resources"]
-elif sys.version_info[:2] >= (3, 7):
-    install_requires = ["numpy==1.16.5", "scipy==1.1.0", "pandas==1.0.0", "gurobipy>=7.0.2"]
+if sys.version_info[:2] in [(3, 7), (3, 8)]:
+    install_requires = ["numpy<=1.19.5", "scipy<=1.5.0", "pandas==1.0.0", "gurobipy<=10.0.2"]
+else:
+    sys.exit('Sorry, this version of Python is not supported. Please use Python 3.7 or 3.8')
 
 setup(name='respect',
       python_requires='>=3.6',

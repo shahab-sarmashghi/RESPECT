@@ -203,7 +203,8 @@ However, if your sample is from a species with large within-species
 divergence, then the estimated genome length would be larger than
 the haploid length, approaching ploidy * haploid length based on the 
 magnitude of heterozygosity. Modeling that to estimate heterozygosity 
-and ploidy along with the rest of the parameters are left to a future work.
+and ploidy along with the rest of the parameters should be addressed
+in future work.
 
 ## Note on the best range of coverage to run RESPECT
 RESPECT algorithm is designed and optimized to work with low coverage data.

@@ -195,6 +195,16 @@ print out stack traces of any errors happened. The output files will be
 written to the current working directory. Run `RESPECT --help` to see all 
 available options.
 
+## Note on the heterozygosigy rate and ploidy of genomes
+RESPECT doesn't model the ploidy of genomes and the heterozygosity
+rate between haplotypes. As a result, if heterozygosity rate is small, 
+the estimated genome length should be close to the haploid genome length. 
+However, if your sample is from a species with large within-species 
+divergence, then the estimated genome length would be larger than
+the haploid length, approaching ploidy * haploid length based on the 
+magnitude of heterozygosity. Modeling that to estimate heterozygosity 
+and ploidy along with the rest of the parameters are left to a future work.
+
 ## Note on the best range of coverage to run RESPECT
 RESPECT algorithm is designed and optimized to work with low coverage data.
 In the [paper][1], we have provided the benchmarking results for 0.5X to 4X
